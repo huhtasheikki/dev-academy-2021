@@ -57,5 +57,5 @@
         }
 
     }
-    header("Location: index2.php?sort=amount");
+    header("Location: index.php?sort=amount");
 ?>

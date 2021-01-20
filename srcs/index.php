@@ -1,68 +1,87 @@
 <?php
+    session_start();
+    include("php/get_sql.php");
 
-$servername = "db";
-$username = "root";
-$password = "solita";
-$db_name = "db_solita";
+    $servername = "db";
+    $username = "root";
+    $password = "solita";
+    $db_name = "db_solita";
 
-    $data = json_decode(file_get_contents("names.json"), true);
-//    $namesdata = json_decode(file_get_contents("names.json"));
-//    $data = json_decode($namesdata, true);
-    $names = $data['names'];
-    $name = $names['name'];
-    $amounts = $names['amount'];
-    // echo "NAMES";
-    // var_dump($names);
-    // echo "NAME";
-    // var_dump($name);
-    // echo "AMOUNTS";
-    // var_dump($amounts);
+    if(!$_SESSION['init']) {
+        $data = json_decode(file_get_contents("names.json"), true);
+        $names = $data['names'];
+        $conn = new mysqli($servername, $username, $password, $db_name);
+        $_SESSION['namecount'] = 0;
+        $_SESSION['first'] = 'amount';
+        $_SESSION['first_sort'] = 'DESC';
+        $_SESSION['second'] = 'name';
+        $_SESSION['second_sort'] = 'ASC';
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        foreach ($names as $value) {
+            $sql = "INSERT INTO tb_names (name, amount)
+            VALUES (\"$value[name]\", $value[amount])";
+            if ($conn->query($sql) === TRUE) {
+                $_SESSION['namecount']++;
+                // echo "New record created successfully";
+            }
+            else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }
+        $_SESSION['init'] = 1;
+        $conn->close();
+    }
+?>
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Top names for Solita Employees</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
+<?php
+if (!$_SESSION['sort']) {
+    $sql = get_sql('amount', 'DESC', 'name', 'ASC');
+}
+elseif ($_SESSION['sort']) {
+    $sql = get_sql($_SESSION['first'], $_SESSION['first_sort'], $_SESSION['second'], $_SESSION['second_sort']);
+}
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $db_name);
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-
-
-foreach ($names as $value) {
-    // echo "++++++++++++++++++++";
-    // var_dump($value);
-    $sql = "INSERT INTO tb_names (name, amount)
-    VALUES (\"$value[name]\", $value[amount])";
-    // echo "||||||";
-    // echo $sql;
-    // echo "||||||";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+      echo "Name: " . $row["name"]. " - Amount: " . $row["amount"]. "<br>";
     }
-    else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-}
-
-/*
-$sql = "INSERT INTO tb_names (name, amount)
-VALUES ('Heikki', 3)";
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-*/
-
-
-
-$conn->close();
-
-
-    echo "Testi toimii!";
+  } else {
+    echo "0 results";
+  }
+  $conn->close();
 
 ?>
+
+<h1>Number of names: 
+<?php
+echo $_SESSION['namecount'];
+?>
+</h1>
+<p>ADD HEIKKI TO DEV ACADEMY!</p>
+
+        <form action="sort.php" method="GET">
+			<!-- Product to delete <input name="product_delete" value=""> -->
+			<input name="amount" type="submit" value="Sort by Amount">
+            <input name="name" type="submit" value="Sort by Name">
+		</form>
+
+</body>
+</html>
