@@ -1,8 +1,24 @@
 <?php
-	session_start();
-    $_SESSION['sort'] = 1;
+    session_start();
+    include("php/get_sql.php");
+
+    $servername = "db";
+    $username = "root";
+    $password = "solita";
+    $db_name = "db_solita";
     $getit = ($_GET);
-    if ($getit['amount']) {
+    if ($getit['add']) {
+        $conn = new mysqli($servername, $username, $password, $db_name);
+        // Check connection
+        if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = get_add_sql("Heikki", 1);
+        $conn->query($sql);
+        $_SESSION['namecount']++;
+    }
+    elseif ($getit['amount']) {
+        $_SESSION['sort'] = 1;
         if (!$_SESSION['first']) {
             $_SESSION['first'] = 'amount';
             $_SESSION['first_sort'] = 'DESC';
@@ -30,6 +46,7 @@
         }
     }
     else {
+        $_SESSION['sort'] = 1;
         if (!$_SESSION['first']) {
             $_SESSION['first'] = 'name';
             $_SESSION['first_sort'] = 'ASC';
@@ -57,5 +74,5 @@
         }
 
     }
-    header("Location: index.php?sort=amount");
+    header("Location: index.php");
 ?>

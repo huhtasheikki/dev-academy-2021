@@ -1,6 +1,7 @@
 <?php
     session_start();
     include("php/get_sql.php");
+    // include("php/get_add_sql.php");
 
     $servername = "db";
     $username = "root";
@@ -43,12 +44,15 @@
 </head>
 <body>
 
+<div class="main">
+    <div class="header">Top 20</div>
+
 <?php
 if (!$_SESSION['sort']) {
-    $sql = get_sql('amount', 'DESC', 'name', 'ASC');
+    $sql = get_sort_sql('amount', 'DESC', 'name', 'ASC');
 }
 elseif ($_SESSION['sort']) {
-    $sql = get_sql($_SESSION['first'], $_SESSION['first_sort'], $_SESSION['second'], $_SESSION['second_sort']);
+    $sql = get_sort_sql($_SESSION['first'], $_SESSION['first_sort'], $_SESSION['second'], $_SESSION['second_sort']);
 }
 
 $conn = new mysqli($servername, $username, $password, $db_name);
@@ -79,9 +83,11 @@ echo $_SESSION['namecount'];
 
         <form action="sort.php" method="GET">
 			<!-- Product to delete <input name="product_delete" value=""> -->
+            <input name="add" type="submit" value="ADD HEIKKI TO DEV ACADEMY!"><br>
 			<input name="amount" type="submit" value="Sort by Amount">
             <input name="name" type="submit" value="Sort by Name">
 		</form>
+</div>
 
 </body>
 </html>
