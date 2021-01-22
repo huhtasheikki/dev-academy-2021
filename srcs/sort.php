@@ -7,6 +7,7 @@
     $password = "solita";
     $db_name = "db_solita";
     $getit = ($_GET);
+    
     if ($getit['add']) {
         $conn = new mysqli($servername, $username, $password, $db_name);
         // Check connection

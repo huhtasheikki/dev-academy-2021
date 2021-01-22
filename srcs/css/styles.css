@@ -1,31 +1,81 @@
 body{
-    background-color: lightblue;
-    position: relative;
+    background-color: lightpink;
+    /* position: relative; */
     text-align: center;
     height: 100%;
 }
 
 .main{
+    width: 75%;
     position: absolute;
     left: 50%;
     transform: translate(-50%);
     border: 5px solid #FFFF00;
     padding: 10px;  
     background-color: antiquewhite;
-    /* position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: antiquewhite;
-    text-align: center;
-    border-width: 0.1vw;
-    border-style: solid;
-    width: 85%; */
 }
 
 .header{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 3vw;
+    font-family: Arial, Helvetica, sans-serif,;
+    font-size: 4vw;
     padding-top: 2vh;
-    padding-bottom: 5vh;
+}
+
+.database_info {
+    font-family: Arial, Helvetica, sans-serif,;
+    font-size: 2vw;
+    padding-bottom: 3vh;
+}
+
+.people_table {
+    display: table;
+    text-align: center;
+    width: 100%;
+    border-bottom: solid;
+}
+
+.people_row {
+    display: table-row;
+}
+
+.people_name_cell {
+    display: table-cell;
+    border-style: solid;
+    border-bottom: black;
+    background-color: blanchedalmond;
+    text-align: left;
+    font-size: 1.3vh;
+    padding: 5px;
+}
+
+.people_amount_cell {
+    display: table-cell;
+    background-color: burlywood;
+    border-style: solid;
+    border-bottom: black;
+    text-align: left;
+    font-size: 1.3vh;
+    padding: 5px;
+}
+
+.name {
+    text-align: left;
+    background-color: lightpink;
+    font-family: Arial, Helvetica, sans-serif;
+    display: table-cell;
+    padding: 5px;
+}
+
+.amount {
+    background-color: lightslategrey;
+    font-family: Arial, Helvetica, sans-serif;
+    display: table-cell;
+    padding: 5px;
+}
+
+.center {
+    background-color: mediumaquamarine;
+    margin: auto;
+    width: 70%;
+    padding: 10px;
 }

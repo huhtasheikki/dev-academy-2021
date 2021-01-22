@@ -13,11 +13,11 @@ services:
       - ./db:/var/lib/mysql
       - ./init/:/docker-entrypoint-initdb.d/:ro
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
 
   php:
     build: .
@@ -28,3 +28,11 @@ services:
       - 80:80
     volumes:
       - ./srcs:/var/www/html/
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    links: 
+      - db
+    ports:
+      - 8183:80
